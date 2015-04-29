@@ -38,7 +38,7 @@ class ArchiveReference(models.Model):
 class Meeting(models.Model):
         title = models.CharField(max_length=100)
         date = models.DateField()
-        members = models.ManyToManyField(Person, blank=True, null=True)
+        members = models.ManyToManyField(Person)
         slug = models.SlugField(max_length=110)
         filenumber = models.ForeignKey(ArchiveReference, blank=True, null=True)
 
@@ -51,10 +51,10 @@ class Meeting(models.Model):
 
 class Document(models.Model):
         title = models.CharField(max_length=150)
-        author = models.ManyToManyField(Person, blank=True, null=True)
+        author = models.ManyToManyField(Person)
         review_flag = models.BooleanField(default=False)
         doc_file = models.FileField(blank=True, null=True)      
-        meetings = models.ManyToManyField(Meeting, blank=True, null=True)
+        meetings = models.ManyToManyField(Meeting)
         archival_references = models.ManyToManyField(ArchiveReference)
 
         slug = models.SlugField(max_length=150)
