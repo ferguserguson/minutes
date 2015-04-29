@@ -54,8 +54,8 @@ class Document(models.Model):
         author = models.ManyToManyField(Person, blank=True, null=True)
         review_flag = models.BooleanField(default=False)
         doc_file = models.FileField(blank=True, null=True)      
-        meeting = models.ManyToManyField(Meeting, blank=True, null=True)
-        archivereferences = models.ManyToManyField(ArchiveReference)
+        meetings = models.ManyToManyField(Meeting, blank=True, null=True)
+        archival_references = models.ManyToManyField(ArchiveReference)
 
         slug = models.SlugField(max_length=150)
 
