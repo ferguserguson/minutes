@@ -3,7 +3,7 @@ from django.utils.text import slugify
 
 
 class Person(models.Model):
-        title = models.CharField(max_length=50)
+        title = models.CharField(max_length=50, blank=True)
         first_name = models.CharField(max_length=25)
         last_name = models.CharField(max_length=25)
         slug = models.SlugField(max_length=100)
@@ -26,6 +26,7 @@ class ArchiveReference(models.Model):
         series = models.CharField(max_length = 50)
         filenumber = models.CharField(max_length = 15)
         dateclosed = models.DateField(blank=True, null=True)
+	TRIM_number = models.CharField(max_length=33)
 
         def __unicode__(self):
                 return self.filenumber
@@ -36,14 +37,16 @@ class ArchiveReference(models.Model):
 
 
 class Meeting(models.Model):
+	senior_body = models.CharField(max_length=100, blank=True)
         title = models.CharField(max_length=100)
         date = models.DateField()
-        members = models.ManyToManyField(Person)
+	meeting_number = models.CharField(max_length=10, blank=True, null=True)
+	members = models.ManyToManyField(Person, blank=True)
         slug = models.SlugField(max_length=110)
         filenumber = models.ForeignKey(ArchiveReference, blank=True, null=True)
 
         def __unicode__(self):
-                return "%s %s" %(self.title, self.date)
+                return "%s %s" %(self.title, self.meeting_number)
 
         def save(self):
                 self.slug = slugify(self)
@@ -51,11 +54,13 @@ class Meeting(models.Model):
 
 class Document(models.Model):
         title = models.CharField(max_length=150)
-        author = models.ManyToManyField(Person)
+        author = models.ManyToManyField(Person, blank=True)
+	date_created = models.DateField(blank=True, null=True)
         review_flag = models.BooleanField(default=False)
         doc_file = models.FileField(blank=True, null=True)      
         meetings = models.ManyToManyField(Meeting)
         archival_references = models.ManyToManyField(ArchiveReference)
+	notes = models.CharField(max_length=3000, blank=True)
 
         slug = models.SlugField(max_length=150)
 
